@@ -13,14 +13,16 @@ import com.appsdeveloperblog.app.ws.userservice.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	Map<String, UserRest> users;
 	Utils utils;
-	
+
 	public UserServiceImpl() {
-		
+		// if we remove default constructor, @Autowired is not required for the below constructor
+		// Spring auto-wires it automatically
 	}
-	
+
+	// Construction Injection
 	@Autowired
 	public UserServiceImpl(Utils utils) {
 		this.utils = utils;
@@ -33,13 +35,14 @@ public class UserServiceImpl implements UserService {
 		returnValue.setFirstName(userDetails.getFirstName());
 		returnValue.setLastName(userDetails.getLastName());
 		returnValue.setEmail(userDetails.getEmail());
-		
+
 		String userId = utils.generateUserId();
 		returnValue.setUserId(userId);
-		
-		if(users == null) users = new HashMap<>();
+
+		if (users == null)
+			users = new HashMap<>();
 		users.put(userId, returnValue);
-		
+
 		return returnValue;
 	}
 

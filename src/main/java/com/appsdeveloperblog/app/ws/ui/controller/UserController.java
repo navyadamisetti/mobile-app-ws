@@ -23,7 +23,6 @@ import com.appsdeveloperblog.app.ws.ui.model.request.UpdateUserDetailsRequestMod
 import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserRest;
 import com.appsdeveloperblog.app.ws.userservice.UserService;
-import com.appsdeveloperblog.app.ws.userservice.impl.UserServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -34,6 +33,7 @@ public class UserController {
 	
 	Map<String, UserRest> users;
 	
+	//Field Injection
 	@Autowired
 	UserService userService;
 	
