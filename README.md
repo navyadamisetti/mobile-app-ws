@@ -1,1 +1,1 @@
-A mobile application template with Spring Web, SpringBoot
+A RESTful Web Service application with Spring Framework
