@@ -45,5 +45,8 @@ public class UserServiceImpl implements UserService {
 
 		return returnValue;
 	}
-
+	
+	public Map<String, UserRest> getUsers(){
+		return users;
+	}
 }

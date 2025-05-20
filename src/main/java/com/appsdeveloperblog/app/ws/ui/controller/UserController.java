@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appsdeveloperblog.app.ws.exceptions.UserServiceException;
+//import com.appsdeveloperblog.app.ws.exceptions.UserServiceException;
 import com.appsdeveloperblog.app.ws.ui.model.request.UpdateUserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserRest;
@@ -37,6 +37,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	
 	@GetMapping
 	public String getUser(@RequestParam(defaultValue = "1", required=false) int page,
 			@RequestParam(defaultValue = "50") int limit,
@@ -50,7 +51,7 @@ public class UserController {
 	})
 	public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 		
-		if(true) throw new UserServiceException("A UserServiceException is thrown");
+//		if(true) throw new UserServiceException("A UserServiceException is thrown");
 		
 		if(users.containsKey(userId)) {
 			return new ResponseEntity<UserRest>(users.get(userId), HttpStatus.OK);
@@ -69,6 +70,8 @@ public class UserController {
 	public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
 
 		UserRest returnValue = userService.createUser(userDetails);
+		users = userService.getUsers();
+		System.out.println(users);
 		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
 	
@@ -80,6 +83,7 @@ public class UserController {
 			MediaType.APPLICATION_JSON_VALUE
 	})
 	public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UpdateUserDetailsRequestModel userDetails) {
+		System.out.println(users);
 		UserRest storedUserDetails = users.get(userId);
 		storedUserDetails.setFirstName(userDetails.getFirstName());
 		storedUserDetails.setLastName(userDetails.getLastName());
