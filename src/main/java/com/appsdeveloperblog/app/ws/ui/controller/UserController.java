@@ -1,6 +1,5 @@
 package com.appsdeveloperblog.app.ws.ui.controller;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,47 +25,37 @@ import com.appsdeveloperblog.app.ws.userservice.UserService;
 
 import jakarta.validation.Valid;
 
-
 @RestController
-@RequestMapping("/users") //http://localhost:8080/users
+@RequestMapping("/users") // http://localhost:8080/users
 public class UserController {
-	
+
 	Map<String, UserRest> users;
-	
-	//Field Injection
+
+	// Field Injection
 	@Autowired
 	UserService userService;
-	
-	
+
 	@GetMapping
-	public String getUser(@RequestParam(defaultValue = "1", required=false) int page,
+	public ResponseEntity<Map<String, UserRest>> getUser(@RequestParam(defaultValue = "1", required = false) int page,
 			@RequestParam(defaultValue = "50") int limit,
-			@RequestParam(defaultValue = "desc", required=false) String sort) {
-		return "getUser was called with page = " + page + " limit = " + limit + " sort = " + sort;
+			@RequestParam(defaultValue = "desc", required = false) String sort) {
+//		return "getUser was called with page = " + page + " limit = " + limit + " sort = " + sort;
+		return new ResponseEntity<Map<String, UserRest>>(users, HttpStatus.OK);
 	}
-	
-	@GetMapping(path="/{userId}", produces = {
-			MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE
-	})
+
+	@GetMapping(path = "/{userId}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
-		
+
 //		if(true) throw new UserServiceException("A UserServiceException is thrown");
-		
-		if(users.containsKey(userId)) {
+
+		if (users.containsKey(userId)) {
 			return new ResponseEntity<UserRest>(users.get(userId), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	
-	@PostMapping(consumes = {
-			MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE
-	}, produces = {
-			MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE
-	})
+
+	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
 
 		UserRest returnValue = userService.createUser(userDetails);
@@ -74,28 +63,25 @@ public class UserController {
 		System.out.println(users);
 		return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
 	}
-	
-	@PutMapping(path="/{userId}", consumes = {
-			MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE
-	}, produces = {
-			MediaType.APPLICATION_XML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE
-	})
-	public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UpdateUserDetailsRequestModel userDetails) {
+
+	@PutMapping(path = "/{userId}", consumes = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_XML_VALUE,
+					MediaType.APPLICATION_JSON_VALUE })
+	public UserRest updateUser(@PathVariable String userId,
+			@Valid @RequestBody UpdateUserDetailsRequestModel userDetails) {
 		System.out.println(users);
 		UserRest storedUserDetails = users.get(userId);
 		storedUserDetails.setFirstName(userDetails.getFirstName());
 		storedUserDetails.setLastName(userDetails.getLastName());
-		
+
 		users.put(userId, storedUserDetails);
-		
+
 		return users.get(userId);
 	}
-	
-	@DeleteMapping(path="/{userId}")
+
+	@DeleteMapping(path = "/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
-		
+
 		users.remove(userId);
 		return ResponseEntity.noContent().build();
 	}
