@@ -18,7 +18,8 @@ public class UserServiceImpl implements UserService {
 	Utils utils;
 
 	public UserServiceImpl() {
-		// if we remove default constructor, @Autowired is not required for the below constructor
+		// if we remove default constructor, @Autowired is not required for the below
+		// constructor
 		// Spring auto-wires it automatically
 	}
 
@@ -45,8 +46,8 @@ public class UserServiceImpl implements UserService {
 
 		return returnValue;
 	}
-	
-	public Map<String, UserRest> getUsers(){
+
+	public Map<String, UserRest> getUsers() {
 		return users;
 	}
 }

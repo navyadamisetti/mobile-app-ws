@@ -6,7 +6,7 @@ public class ErrorMessage {
 
 	private Date timestamp;
 	private String message;
-	
+
 	public ErrorMessage() {
 	}
 
@@ -15,7 +15,6 @@ public class ErrorMessage {
 		this.timestamp = timestamp;
 		this.message = message;
 	}
-
 
 	public Date getTimestamp() {
 		return timestamp;
@@ -32,6 +31,5 @@ public class ErrorMessage {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
 
 }
