@@ -1,7 +1,7 @@
 package com.appsdeveloperblog.app.ws.exceptions;
 
 public class UserServiceException extends RuntimeException {
-	
+
 	/**
 	 * 
 	 */
