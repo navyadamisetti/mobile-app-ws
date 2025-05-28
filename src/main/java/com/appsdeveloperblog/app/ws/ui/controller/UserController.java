@@ -1,6 +1,5 @@
 package com.appsdeveloperblog.app.ws.ui.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Map<String, UserRest>> getUser(@RequestParam(defaultValue = "1", required = false) int page,
 			@RequestParam(defaultValue = "50") int limit,
 			@RequestParam(defaultValue = "desc", required = false) String sort) {
