@@ -1,25 +1,31 @@
-package com.appsdeveloperblog.app.ws.ui.topic;
+package com.appsdeveloperblog.app.ws.ui.lesson;
 
+
+import com.appsdeveloperblog.app.ws.ui.course.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Topic {
+public class Lesson {
 
 	@Id
 	private String id;
 	private String name;
 	private String description;
+	@ManyToOne // do lazy loading here to avoid topic direct mapping to the course
+	private Course course;
 
-	public Topic() {
+	public Lesson() {
 
 	}
 
-	public Topic(String id, String name, String description) {
+	public Lesson(String id, String name, String description, String topicId, String courseId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.course = new Course(courseId, "", "", topicId);
 	}
 
 	public String getId() {
@@ -44,6 +50,14 @@ public class Topic {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 }
