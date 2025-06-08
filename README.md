@@ -1,7 +1,7 @@
 ### Mobile application WebService
 ##### A RESTful Web Service application with Spring Framework
 
-Resources : Topic, Course, Lesson
+Resources: Topic, Course, Lesson
 
 #####Topics:
 	GET		/topics		Get all Topics
