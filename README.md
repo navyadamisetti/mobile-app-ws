@@ -11,6 +11,7 @@ Resources: Topic, Course, Lesson
 	DELETE		/topics/id	Deletes the Topic
 
 ##### Courses:
+
 	GET		/topics/topicId/courses		Get all Courses for the given topic
 	GET		/topics/topicId/courses/id	Get the Course of the given topic
 	POST		/topics/topicId/courses		Create a new Course for the given topic
@@ -23,3 +24,4 @@ Resources: Topic, Course, Lesson
 	POST		/topics/topicId/courses/courseId/lessons	Create new Lesson for the given topic's course
 	PUT		/topics/topicId/courses/courseId/lessons/id	Updates the Lesson of the given topic's course
 	DELETE		/topics/topicId/courses/courseId/lessons/id	Deletes the Lesson of the given topic's course
+
