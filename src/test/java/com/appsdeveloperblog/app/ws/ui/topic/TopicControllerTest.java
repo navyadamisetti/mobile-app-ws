@@ -1,7 +1,11 @@
 package com.appsdeveloperblog.app.ws.ui.topic;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -10,6 +14,8 @@ import org.springframework.http.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+//@TestInstance(TestInstance.Lifecycle.PER_METHOD) This is by default we don't have to mention it
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS) but default can be changed with PER_CLASS, and @BeforeAll can be non static
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TopicControllerTest {
 
@@ -21,14 +27,33 @@ class TopicControllerTest {
 
     @Autowired
     private TopicRepository topicRepository;
+    
+    @BeforeAll
+    static void beforeAllInit() {
+    	//org.junit.platform.commons.JUnitException: @BeforeAll method 'void com.appsdeveloperblog.app.ws.ui.topic.TopicControllerTest.beforeAllInit()' 
+    	//must be static unless the test class is annotated with @TestInstance(Lifecycle.PER_CLASS).
+    	System.out.println("This need to run before all tests. ");
+    }
+    
+    @AfterAll
+    static void afterAllInit() {
+    	System.out.println("This need to run after all tests. ");
+    }
 
     @BeforeEach
     void setUp() {
+    	// this method runs before each test method run
+    	System.out.println("This need to run before each test. ");
         topicRepository.deleteAll();
-
         topicRepository.save(new Topic("javaee", "Enterprise Java", "Enterprise Java Description"));
         topicRepository.save(new Topic("java", "Java", "Java Description"));
         topicRepository.save(new Topic("javascript", "JavaScript", "JavaScript Description"));
+    }
+    
+    @AfterEach
+    void cleanUp() {
+    	// this method runs after each test method run
+    	System.out.println("Cleaning Up...");
     }
 
     @Test
