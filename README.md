@@ -25,3 +25,7 @@ Resources: Topic, Course, Lesson
 	PUT		/topics/topicId/courses/courseId/lessons/id	Updates the Lesson of the given topic's course
 	DELETE		/topics/topicId/courses/courseId/lessons/id	Deletes the Lesson of the given topic's course
 
+
+####Tests
+	testGetAllTopics
+	
