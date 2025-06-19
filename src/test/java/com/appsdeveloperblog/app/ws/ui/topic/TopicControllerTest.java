@@ -1,5 +1,9 @@
 package com.appsdeveloperblog.app.ws.ui.topic;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -9,6 +13,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -22,75 +27,109 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 //@TestInstance(TestInstance.Lifecycle.PER_METHOD) This is by default we don't have to mention it
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS) but default can be changed with PER_CLASS, and @BeforeAll can be non static
+@DisplayName("Test class for Topic Controller")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TopicControllerTest {
 
-    @LocalServerPort
-    private int port;
+	@LocalServerPort
+	private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+	@Autowired
+	private TestRestTemplate restTemplate;
 
-    @Autowired
-    private TopicRepository topicRepository;
-    
-    @BeforeAll
-    static void beforeAllInit() {
-    	//org.junit.platform.commons.JUnitException: @BeforeAll method 'void com.appsdeveloperblog.app.ws.ui.topic.TopicControllerTest.beforeAllInit()' 
-    	//must be static unless the test class is annotated with @TestInstance(Lifecycle.PER_CLASS).
-    	System.out.println("This need to run before all tests. ");
-    }
-    
-    @AfterAll
-    static void afterAllInit() {
-    	System.out.println("This need to run after all tests. ");
-    }
+	@Autowired
+	private TopicRepository topicRepository;
 
-    @BeforeEach
-    void setUp() {
-    	// this method runs before each test method run
-    	System.out.println("This need to run before each test. ");
-        topicRepository.deleteAll();
-        topicRepository.save(new Topic("javaee", "Enterprise Java", "Enterprise Java Description"));
-        topicRepository.save(new Topic("java", "Java", "Java Description"));
-        topicRepository.save(new Topic("javascript", "JavaScript", "JavaScript Description"));
-    }
-    
-    @AfterEach
-    void cleanUp() {
-    	// this method runs after each test method run
-    	System.out.println("Cleaning Up...");
-    }
+	@BeforeAll
+	static void beforeAllInit() {
+		// org.junit.platform.commons.JUnitException: @BeforeAll method 'void
+		// com.appsdeveloperblog.app.ws.ui.topic.TopicControllerTest.beforeAllInit()'
+		// must be static unless the test class is annotated with
+		// @TestInstance(Lifecycle.PER_CLASS).
+		System.out.println("This need to run before all tests. ");
+	}
 
-    @Test
-    @DisplayName("Testing All Topics get")
-    @EnabledOnOs(OS.WINDOWS)
-    void testGetAllTopics() {
-        String url = "http://localhost:" + port + "/topics";
+	@AfterAll
+	static void afterAllInit() {
+		System.out.println("This need to run after all tests. ");
+	}
 
-        ResponseEntity<Topic[]> response = restTemplate.getForEntity(url, Topic[].class);
+	@BeforeEach
+	void setUp() {
+		// this method runs before each test method run
+		System.out.println("This need to run before each test. ");
+		topicRepository.deleteAll();
+		topicRepository.save(new Topic("javaee", "Enterprise Java", "Enterprise Java Description"));
+		topicRepository.save(new Topic("java", "Java", "Java Description"));
+		topicRepository.save(new Topic("javascript", "JavaScript", "JavaScript Description"));
+	}
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
-        assertThat(response.getBody()).hasSize(3);
+	@AfterEach
+	void cleanUp() {
+		// this method runs after each test method run
+		System.out.println("Cleaning Up...");
+	}
 
-        // Validate the first item
-        assertThat(response.getBody()[0].getId()).isIn("javaee", "java", "javascript");
-        assertThat(response.getBody()[0].getName()).isNotEmpty();
-        assertThat(response.getBody()[0].getDescription()).isNotEmpty();
-    }
-    
-    @Test
-    @Disabled
-    @DisplayName("TDD method. Should not run")
-    void testDisabled() {
-    	fail("This test should be failed");
-    }
-    
-    @Test
-    void testServer() {
-    	boolean isServerUp = true;
-    	assumeTrue(isServerUp);
-    	
-    }
+	@Test
+	@DisplayName("Testing All Topics get")
+	@EnabledOnOs(OS.WINDOWS)
+	void testGetAllTopics() {
+		String url = "http://localhost:" + port + "/topics";
+
+		ResponseEntity<Topic[]> response = restTemplate.getForEntity(url, Topic[].class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
+		assertThat(response.getBody()).hasSize(3);
+
+		// Validate the first item
+		assertThat(response.getBody()[0].getId()).isIn("javaee", "java", "javascript");
+		assertThat(response.getBody()[0].getName()).isNotEmpty();
+		assertThat(response.getBody()[0].getDescription()).isNotEmpty();
+	}
+
+	@Test
+	@Disabled
+	@DisplayName("TDD method. Should not run")
+	void testDisabled() {
+		fail("This test should be failed");
+	}
+
+	@Test
+	@DisplayName("Test example of assumptions")
+	void testServer() {
+		boolean isServerUp = true;
+		assumeTrue(isServerUp);
+
+	}
+
+	@Test
+	@DisplayName("Test example of assertAll")
+	void testSomething() {
+		assertAll(
+				() -> assertTrue(true), 
+				() -> assertFalse(false), 
+				() -> assertNotEquals(0, 1));
+	}
+
+	@Nested
+	@DisplayName("Group of X Tests")
+	class groupingOfTests {
+		
+		@Test
+		@DisplayName("Test X 1")
+		void testX1() {
+			assertTrue(true);
+
+		}
+		
+		@Test
+		@DisplayName("Test X 2")
+		void testX2() {
+			assertFalse(true);
+
+		}
+
+	}
+
 }
