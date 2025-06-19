@@ -1,11 +1,17 @@
 package com.appsdeveloperblog.app.ws.ui.topic;
 
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -57,6 +63,8 @@ class TopicControllerTest {
     }
 
     @Test
+    @DisplayName("Testing All Topics get")
+    @EnabledOnOs(OS.WINDOWS)
     void testGetAllTopics() {
         String url = "http://localhost:" + port + "/topics";
 
@@ -70,5 +78,19 @@ class TopicControllerTest {
         assertThat(response.getBody()[0].getId()).isIn("javaee", "java", "javascript");
         assertThat(response.getBody()[0].getName()).isNotEmpty();
         assertThat(response.getBody()[0].getDescription()).isNotEmpty();
+    }
+    
+    @Test
+    @Disabled
+    @DisplayName("TDD method. Should not run")
+    void testDisabled() {
+    	fail("This test should be failed");
+    }
+    
+    @Test
+    void testServer() {
+    	boolean isServerUp = true;
+    	assumeTrue(isServerUp);
+    	
     }
 }
