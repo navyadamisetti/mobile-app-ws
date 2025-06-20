@@ -14,6 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -91,12 +94,14 @@ class TopicControllerTest {
 	@Test
 	@Disabled
 	@DisplayName("TDD method. Should not run")
+	@Tag("JUnit5")
 	void testDisabled() {
 		fail("This test should be failed");
 	}
 
 	@Test
 	@DisplayName("Test example of assumptions")
+	@Tag("JUnit5")
 	void testServer() {
 		boolean isServerUp = true;
 		assumeTrue(isServerUp);
@@ -105,6 +110,7 @@ class TopicControllerTest {
 
 	@Test
 	@DisplayName("Test example of assertAll")
+	@Tag("JUnit5")
 	void testSomething() {
 		assertAll(
 				() -> assertTrue(true), 
@@ -114,6 +120,7 @@ class TopicControllerTest {
 
 	@Nested
 	@DisplayName("Group of X Tests")
+	@Tag("JUnit5")
 	class groupingOfTests {
 		
 		@Test
@@ -126,9 +133,18 @@ class TopicControllerTest {
 		@Test
 		@DisplayName("Test X 2")
 		void testX2() {
-			assertFalse(true);
+			assertFalse(false);
 
 		}
+
+	}
+	
+	@RepeatedTest(5)
+	@DisplayName("Test example of Repeated test")
+	@Tag("JUnit5")
+	void testingRepeatedTest(RepetitionInfo repetitionInfo) {
+		repetitionInfo.getCurrentRepetition(); //this object is initialized using dependency injection by junit5
+		assertFalse(false);
 
 	}
 
