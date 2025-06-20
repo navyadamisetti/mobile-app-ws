@@ -18,6 +18,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ class TopicControllerTest {
 
 	@Autowired
 	private TopicRepository topicRepository;
+	
+	TestInfo testInfo;
+	TestReporter testReporter;
 
 	@BeforeAll
 	static void beforeAllInit() {
@@ -58,8 +63,12 @@ class TopicControllerTest {
 	}
 
 	@BeforeEach
-	void setUp() {
+	void setUp(TestInfo testInfo, TestReporter testReporter) {
 		// this method runs before each test method run
+		
+		this.testInfo = testInfo;
+		this.testReporter = testReporter;
+		
 		System.out.println("This need to run before each test. ");
 		topicRepository.deleteAll();
 		topicRepository.save(new Topic("javaee", "Enterprise Java", "Enterprise Java Description"));
@@ -112,6 +121,8 @@ class TopicControllerTest {
 	@DisplayName("Test example of assertAll")
 	@Tag("JUnit5")
 	void testSomething() {
+//		System.out.println("Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags());
+		testReporter.publishEntry("Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags()); // can put this in before each too
 		assertAll(
 				() -> assertTrue(true), 
 				() -> assertFalse(false), 
